@@ -42,6 +42,68 @@ app.get('/getallcustomer',(req,res)=>{
     })
 })
 
+// Creating the customers
+app.post('/createcustomer',(req,res)=>{
+    let firstname = req.body.firstname;
+    let lastname = req.body.lastname;
+    let email = req.body.email;
+    let number = req.body.number;
+
+    let qr = `insert into customers(firstname,lastname,number,email)
+                    values('${firstname}','${lastname}','${number}','${email}')`
+
+    db.query(qr,(err,result)=>{
+        if (err) {
+            console.log(err)
+        }
+        res.send({
+            message:'data inserted'
+        })
+})
+});
+
+// Updating th customer
+app.put('/updatecustomer/:id',(req,res)=>{
+    let id = req.params.id;
+    let firstname = req.body.firstname;
+    let lastname = req.body.lastname;
+    let email = req.body.email;
+    let number = req.body.number;
+    
+
+    let qr = `update customers 
+                    set firstname = '${firstname}',lastname = '${lastname}',number='${number}',email='${email}'
+                    where id = ${id}`;
+
+    db.query(qr,(err,result)=>{
+        if (err) {
+            console.log(err)
+        }
+        res.send({
+            message:'data updated'
+        });
+
+    });
+})
+
+// Delete the customer
+app.delete('/deletecustomer/:id',(req,res)=>{
+    let id = req.params.id
+    let qr = `delete from customers 
+                where id = '${id}'`;
+
+        db.query(qr,(err,result)=>{
+        if (err) {
+        console.log(err)
+        }
+        res.send({
+        message:'data deleted'
+        });
+
+});
+
+})
+
 app.listen(3000,()=>{
     console.log('server running')
 })
